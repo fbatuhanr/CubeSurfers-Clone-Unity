@@ -1,13 +1,17 @@
 using System;
 using DG.Tweening;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Stacker : MonoBehaviour
 {
     [Tag] [SerializeField] private string stackTag, obstacleTag;
     [SerializeField] private Transform stacksParent;
-    [SerializeField] private float stackOffset;
+    [SerializeField] private float stackHeight;
+    private Vector3 StackHeight => Vector3.up * stackHeight;
+    public int StacksParentChildCount => stacksParent.childCount;
 
     [Header("Stack Collect and Drop Animations:")]
     [SerializeField] private float collectAnimDuration;
@@ -18,7 +22,7 @@ public class Stacker : MonoBehaviour
     private int beginningStackCount;
     private void Start()
     {
-        beginningStackCount = stacksParent.childCount;
+        beginningStackCount = StacksParentChildCount;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,14 +33,17 @@ public class Stacker : MonoBehaviour
             
             collectedStack.SetParent(stacksParent);
             
-            var stacksCount = stacksParent.childCount-beginningStackCount;
+            var stacksCount = StacksParentChildCount-beginningStackCount;
             
-            var currStackPosition = Vector3.up * stacksCount;
-            
-            // collectedStack.localPosition = currStackPosition
+            var currStackPosition = StackHeight * stacksCount;
+
+            /*var collectedStackRotation = stacksParent.GetChild(StacksParentChildCount - 2).localRotation.y > 0 ? -10f : 10f;
+            collectedStack.DOLocalRotate(Vector3.up * collectedStackRotation, .5f);*/
             collectedStack
                 .DOLocalMove(currStackPosition, collectAnimDuration)
                 .SetEase(collectAnimType);
+            
+            CameraManager.Instance.IncreaseCameraHeight(StacksParentChildCount, StackHeight);
         }
     }
 
@@ -47,14 +54,16 @@ public class Stacker : MonoBehaviour
             var stackCounter = 0;
             foreach (Transform stack in stacksParent)
             {
-                var currStackPosition = Vector3.up * stackCounter++;
+                var currStackPosition = StackHeight * stackCounter++;
+                Debug.Log("curr stack pos: " + currStackPosition);
                
                 //stack.localPosition = currStackPosition;
                 stack
                     .DOLocalMove(currStackPosition, dropAnimDuration)
                     .SetEase(dropAnimType);
-
             }
+            
+            CameraManager.Instance.DecreaseCameraHeight(StacksParentChildCount, StackHeight);
         }
     }
 }

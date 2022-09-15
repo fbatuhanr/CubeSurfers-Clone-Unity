@@ -11,8 +11,8 @@ public class ObstacleCollision : MonoBehaviour
             //Destroy(other.gameObject);
 
             var stack = other.transform;
-            Destroy(stack.GetComponent<BoxCollider>());
             stack.SetParent(null);
+            Destroy(stack.GetComponent<BoxCollider>());
         }
     }
 }

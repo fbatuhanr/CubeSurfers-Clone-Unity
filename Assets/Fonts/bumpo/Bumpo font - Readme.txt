@@ -1,0 +1,3 @@
+BUMPO font
+
+This font is for PERSONAL USE ONLY and requires a license for any commercial use. The font license can be purchased at: https://www.myfonts.com/fonts/deepak-dogra/bumpo/Unauthorized copying and distribution of the font, even if modified, merged, or included with other software is forbidden. For any further information regarding the font and its licensing, please contact the designer at: ds_dogra@yahoo.com

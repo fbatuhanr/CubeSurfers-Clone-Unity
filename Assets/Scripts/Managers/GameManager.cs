@@ -27,4 +27,6 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    public bool IsPlayingOnWebGL => Application.platform == RuntimePlatform.WebGLPlayer;
 }
